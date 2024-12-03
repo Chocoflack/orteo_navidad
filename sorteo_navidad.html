@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorteo de Intercambio de Navidad</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #ffcccc, #ff9999);
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #b30000;
+    }
+    .box {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    button {
+      background-color: #ff4d4d;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #e60000;
+    }
+    .name-display {
+      font-size: 24px;
+      color: #333;
+      margin: 20px 0;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎅 Sorteo de Intercambio de Navidad 🎁</h1>
+  <div class="box">
+    <p>Presiona el botón para descubrir quién participa:</p>
+    <div class="name-display" id="nameDisplay">🎄🎉</div>
+    <button id="selectButton" onclick="selectPerson()" onTouchStart="selectPerson()">¡Sacar Nombre!</button>
+  </div>
+
+  <script>
+    // Aquí va la URL de tu Web App
+    const url = 'https://script.google.com/macros/s/AKfycbwH1sZpC9uD2XRb0dtDXqigwzIiJcJYpnR3QzZYlsRYhn0EaSrg0noHcmvW5Jpkjp3K/exec'; // Tu URL de la Web App
+    
+    function selectPerson() {
+      // Agregar un parámetro de caché para evitar problemas con la caché del navegador
+      const cacheBuster = new Date().getTime(); // Usamos el tiempo actual como parámetro para evitar la caché
+      const finalUrl = `${url}?t=${cacheBuster}`;
+
+      fetch(finalUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.name) {
+            document.getElementById("nameDisplay").innerText = data.name;
+            // Ocultar el botón después de que se seleccione el nombre
+            document.getElementById("selectButton").classList.add("hidden");
+          } else {
+            document.getElementById("nameDisplay").innerText = "¡Todos los nombres han sido seleccionados! 🎉";
+          }
+        })
+        .catch(error => {
+          document.getElementById("nameDisplay").innerText = "Hubo un error. Intenta nuevamente.";
+          console.error("Error al obtener los datos:", error);
+        });
+    }
+  </script>
+</body>
+</html>
